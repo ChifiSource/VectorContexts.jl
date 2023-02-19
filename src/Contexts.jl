@@ -29,29 +29,31 @@ different elements inside of the Context.
 """
 abstract type AbstractContext <: Toolips.Modifier
 
-    """
-    ### Context <: AbstractContext
-    - windoww::Component{:svg}
-    - uuid::String
-    - layers::Dict{String,  UnitRange{Int64}}
-    - dim::Int64{Int64, Int64}
-    - margin::Pair{Int64, Int64}
+"""
+### Context <: AbstractContext
+- windoww::Component{:svg}
+- uuid::String
+- layers::Dict{String,  UnitRange{Int64}}
+- dim::Int64{Int64, Int64}
+- margin::Pair{Int64, Int64}
 
-    The `Context` can be used with the `draw!` method in order to create and
-    draw SVG layers -- as well as store them and mutate them. When indexed with
-    a `String`, this will yield the layer of that name. When indexed with a
-    `UnitRange{Int64}`, it will yield the layers in that range. See the
-    `context` method for more information on easy ways to create these.
-    ##### example
-    ```
-    using Contexts
+The `Context` can be used with the `draw!` method in order to create and
+draw SVG layers -- as well as store them and mutate them. When indexed with
+a `String`, this will yield the layer of that name. When indexed with a
+`UnitRange{Int64}`, it will yield the layers in that range. See the
+`context` method for more information on easy ways to create these.
+##### example
+```
+using Contexts
 
-    con = Context()
-    line!(con, [5, 1, 2], [7, 34, 5], "stroke" => "red", "stroke-width" => "10")
-    ```
-    ------------------
-    ##### constructors
-
+con = Context()
+line!(con, [5, 1, 2], [7, 34, 5], "stroke" => "red", "stroke-width" => "10")
+display(con)
+```
+------------------
+##### constructors
+- Context(::Component{:svg}, margin::Pair{Int64, Int64})
+- Context(width::Int64 = 1280, height::Int64 = 720, margin::Pair{Int64, Int64} = 0 => 0)
     """
 mutable struct Context <: AbstractContext
     window::Component{:svg}
@@ -123,9 +125,20 @@ function line!(con::AbstractContext, x::Vector{<:Number}, y::Vector{<:Number},
                     scaled_y::Int64 = round(con.dim[2] * yper)  + con.margin[2]
                     "$(scaled_x)&#32;$(scaled_y),"
                 end for (xper, yper) in zip(percvec_x, percvec_y)))
-    line_comp = ToolipsSVG.polyline("newline", points = line_data)
+    line_comp = ToolipsSVG.polyline(randstring(), points = line_data)
     style!(line_comp, styles ...)
     draw!(con, [line_comp])
+end
+
+function line!(con::AbstractContext, first::Pair{<:Number, <:Number},
+    second::Pair{<:Number, <:Number}, styles::Pair{String, <:Any} ...)
+    if length(styles) == 0
+        styles = ("fill" => "none", "stroke" => "black", "stroke-width" => "4")
+    end
+    ln = ToolipsSVG.line(randstring(), x1 = first[1], y1 = first[2],
+    x2 = second[1], y2 = second[2])
+    style!(ln, styles ...)
+    draw!(con, [ln])
 end
 
 end # - module
