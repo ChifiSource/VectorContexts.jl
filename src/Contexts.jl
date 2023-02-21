@@ -28,7 +28,7 @@ different elements inside of the Context.
 - dim::Pair{Int64, Int64}
 - margin::Pair{Int64, Int64}
 """
-abstract type AbstractContext <: Toolips.Modifier
+abstract type AbstractContext <: Toolips.Modifier end
 
 """
 ### Context <: AbstractContext
@@ -92,7 +92,7 @@ end
 **Contexts**
 ### show(io::Base.TTY, con::AbstractContext) -> _
 ------------------
-Shows the context's window (as HTML).
+Shows the context as text.
 #### example
 ```
 
@@ -102,7 +102,7 @@ function show(io::Base.TTY, con::AbstractContext)
     println("Context ($(con.dim[1]) x $(con.dim[2]))")
 end
 
-getindex(con::Context, r::UnitRange{Int64, Int64}) = begin
+getindex(con::Context, r::UnitRange{Int64}) = begin
     con.layers[findall(x -> x[2] == r, con)]
 end
 
@@ -150,4 +150,5 @@ function line!(con::AbstractContext, first::Pair{<:Number, <:Number},
     draw!(con, [ln])
 end
 
+export group!, line!, Context, layers, elements, AbstractContext, Group
 end # - module
