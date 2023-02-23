@@ -108,7 +108,7 @@ end
 
 getindex(con::Context, str::String) = con.layers[str]
 
-layers(con::Context) = layers
+layers(con::Context) = con.layers
 
 elements(con::Context) = con.window[:children]
 
@@ -127,7 +127,7 @@ mutable struct Group <: AbstractContext
     margin::Pair{Int64, Int64}
     Group(name::String = randstring(), width::Int64 = 1280, height::Int64 = 720,
         margin::Pair{Int64, Int64} = 0 => 0) = begin
-        window::Component{:g} = g("$name", width = width, height = height)
+        window::Component{:g} = ToolipsSVG.g("$name", width = width, height = height)
         new(window, name, Dict{String, UnitRange{Int64}}(), width => height, margin)
     end
 end
@@ -150,5 +150,5 @@ function line!(con::AbstractContext, first::Pair{<:Number, <:Number},
     draw!(con, [ln])
 end
 
-export group!, line!, Context, layers, elements, AbstractContext, Group
+export group!, line!, Context, layers, elements, AbstractContext, Group, draw!
 end # - module
