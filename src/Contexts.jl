@@ -150,5 +150,15 @@ function line!(con::AbstractContext, first::Pair{<:Number, <:Number},
     draw!(con, [ln])
 end
 
+function text!(con::AbstractContext, xy::Pair{<:Number, <:Number}, text::String,
+     styles::Pair{String, <:Any} ...)
+    if length(styles) == 0
+        styles = ("fill" => "black", "font-size" => 10pt)
+    end
+    t = ToolipsSVG.text(randstring(), x = xy[1], y = xy[2], text = text)
+    style!(t, styles ...)
+    draw!(con, [t])
+end
+
 export group!, line!, Context, layers, elements, AbstractContext, Group, draw!
 end # - module
