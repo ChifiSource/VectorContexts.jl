@@ -10,11 +10,11 @@ mutation -- similar to the case with `ToolipsSession`, using a `Modifier` in the
 form of a `Context` to mutate different attributes and store such layers.
 """
 module Contexts
-import Base: getindex, setindex!
+import Base: getindex, setindex!, show, display
 using Toolips
+import Toolips: write!
 using ToolipsSVG
 using Random
-import Base: show, display
 
 """
 ### abstract type AbstractContext <: Toolips.Modifier
@@ -74,6 +74,8 @@ mutable struct Context <: AbstractContext
     end
 end
 
+write!(c::Toolips.AbstractConnection, con::AbstractContext) = write!(c,
+con.window)
 """
 **Contexts**
 ### show(io::IO, con::AbstractContext) -> _
