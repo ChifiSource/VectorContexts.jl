@@ -9,7 +9,7 @@ Contexts is a link between `Toolips` and image layering data, with functional
 mutation -- similar to the case with `ToolipsSession`, using a `Modifier` in the
 form of a `Context` to mutate different attributes and store such layers.
 """
-module Contexts
+module VectorContexts
 import Base: getindex, setindex!, show, display
 using Toolips
 import Toolips: write!
