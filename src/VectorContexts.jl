@@ -4,8 +4,8 @@ Created in February, 2023 by
 by team
 [toolips](https://github.com/orgs/ChifiSource/teams/toolips)
 This software is MIT-licensed.
-### Contexts
-Contexts is a link between `Toolips` and image layering data, with functional
+### VectorContexts
+VectorContexts is a link between `Toolips` and image layering data, with functional
 mutation -- similar to the case with `ToolipsSession`, using a `Modifier` in the
 form of a `Context` to mutate different attributes and store such layers.
 """
