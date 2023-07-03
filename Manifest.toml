@@ -178,18 +178,12 @@ uuid = "a47e2ad8-fcf7-417c-9746-32b9bdf220bd"
 version = "0.2.3"
 
 [[deps.ToolipsSVG]]
-deps = ["Toolips", "ToolipsSession"]
-git-tree-sha1 = "963c63bd4c6578909f18c010de232bd063d82807"
-repo-rev = "main"
-repo-url = "https://github.com/ChifiSource/ToolipsSVG.jl"
+deps = ["Toolips"]
+git-tree-sha1 = "4ef1f278bc2f349a7a3ac07a755773fffa833d2c"
+repo-rev = "Unstable"
+repo-url = "https://github.com/ChifiSource/ToolipsSVG"
 uuid = "8ae86ec9-919d-4ece-9a6d-09b7d28dae11"
 version = "0.1.0"
-
-[[deps.ToolipsSession]]
-deps = ["Dates", "ParseNotEval", "Random", "Toolips"]
-git-tree-sha1 = "a7caded5d61080f526e68b08c96887c25e8d223a"
-uuid = "2fe55384-55bc-4df3-9d59-c817d405cd05"
-version = "0.3.0"
 
 [[deps.TranscodingStreams]]
 deps = ["Random", "Test"]

@@ -4,17 +4,17 @@ Created in February, 2023 by
 by team
 [toolips](https://github.com/orgs/ChifiSource/teams/toolips)
 This software is MIT-licensed.
-### Contexts
-Contexts is a link between `Toolips` and image layering data, with functional
+### VectorContexts
+VectorContexts is a link between `Toolips` and image layering data, with functional
 mutation -- similar to the case with `ToolipsSession`, using a `Modifier` in the
 form of a `Context` to mutate different attributes and store such layers.
 """
-module Contexts
-import Base: getindex, setindex!
+module VectorContexts
+import Base: getindex, setindex!, show, display
 using Toolips
+import Toolips: write!
 using ToolipsSVG
 using Random
-import Base: show, display
 
 """
 ### abstract type AbstractContext <: Toolips.Modifier
@@ -74,6 +74,8 @@ mutable struct Context <: AbstractContext
     end
 end
 
+write!(c::Toolips.AbstractConnection, con::AbstractContext) = write!(c,
+con.window)
 """
 **Contexts**
 ### show(io::IO, con::AbstractContext) -> _
@@ -108,7 +110,7 @@ end
 
 getindex(con::Context, str::String) = con.layers[str]
 
-layers(con::Context) = layers
+layers(con::Context) = con.layers
 
 elements(con::Context) = con.window[:children]
 
@@ -127,7 +129,7 @@ mutable struct Group <: AbstractContext
     margin::Pair{Int64, Int64}
     Group(name::String = randstring(), width::Int64 = 1280, height::Int64 = 720,
         margin::Pair{Int64, Int64} = 0 => 0) = begin
-        window::Component{:g} = g("$name", width = width, height = height)
+        window::Component{:g} = ToolipsSVG.g("$name", width = width, height = height)
         new(window, name, Dict{String, UnitRange{Int64}}(), width => height, margin)
     end
 end
@@ -150,5 +152,15 @@ function line!(con::AbstractContext, first::Pair{<:Number, <:Number},
     draw!(con, [ln])
 end
 
-export group!, line!, Context, layers, elements, AbstractContext, Group
+function text!(con::AbstractContext, x::Int64, y::Int64, text::String, styles::Pair{String, <:Any} ...)
+    if length(styles) == 0
+        styles = ("fill" => "black", "font-size" => 10pt)
+    end
+    t = ToolipsSVG.text(randstring(), x = x, y = y, text = text)
+    style!(t, styles ...)
+    draw!(con, [t])
+end
+
+export group!, line!, Context, layers, elements, AbstractContext, Group, draw!
+export text!
 end # - module
